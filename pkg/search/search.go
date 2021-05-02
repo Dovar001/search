@@ -28,7 +28,6 @@ func FindAllMatchTextInFile(phrase, fileName string) (res []Result){
 
 		filestr = filestr[:len(filestr)-1]
 	 }
-
 	 for i, line := range filestr {
         
 		   if (strings.Contains(line,phrase)){
@@ -40,8 +39,8 @@ func FindAllMatchTextInFile(phrase, fileName string) (res []Result){
 				ColNum: int64(strings.Index(line,phrase)) + 1, 
 
 			}
-		   }
-		res = append(res, result) 
+			res = append(res, result) 
+		}
 	 }
 return res
 }
@@ -54,7 +53,7 @@ func All(ctx context.Context, phrase string, files []string) <-chan []Result{
     
 	wg:= sync.WaitGroup{}
 
-	_,cancel:=context.WithCancel(ctx)
+	ctx,cancel:=context.WithCancel(ctx)
 
 	for i := 0; i < len(files); i++ {
 		wg.Add(1)
@@ -68,11 +67,12 @@ func All(ctx context.Context, phrase string, files []string) <-chan []Result{
 		   }
 			
 		}(ctx, files[i], i, ch)
+		
 		go func() {
 			defer close(ch)
 			wg.Wait()
 		  }()
-		  return ch
+		 // return ch
 	}
 	cancel()
  return ch	
