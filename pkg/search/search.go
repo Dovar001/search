@@ -121,15 +121,9 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result{
 		   res:=FindAnyMatchTextInFile(phrase,filename)
 
              ch <- res
-		//cancel()	
+		cancel()	
 		}(ctx, files[i], i, ch)
-		if ch != nil {
-			go func() {
-				defer close(ch)
-				wg.Wait()
-			  }()
-            break
-		}
+	
 		go func() {
 			defer close(ch)
 			wg.Wait()
