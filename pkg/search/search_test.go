@@ -76,6 +76,7 @@ func BenchmarkAny(b *testing.B) {
 	  }
   }
 
+  /*
   func TestAny(t *testing.T){
 
 
@@ -94,3 +95,4 @@ func BenchmarkAny(b *testing.B) {
 
 	log.Println("---------", s)
 }
+*/
