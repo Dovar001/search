@@ -58,14 +58,14 @@ func FindAnyMatchTextInFile(phrase, fileName string) (res Result){
         
 		   if (strings.Contains(line,phrase)){
             
-			res := Result{
+			res = Result{
 				Phrase:  phrase,
 				Line: line,
 				LineNum: int64(i+1),
 				ColNum: int64(strings.Index(line,phrase)) + 1, 
 
 			}
-			return res
+		break
 		}
 	 }
 return res
@@ -98,7 +98,7 @@ func All(ctx context.Context, phrase string, files []string) <-chan []Result{
 			defer close(ch)
 			wg.Wait()
 		  }()
-		 // return ch
+		 
 	}
 	cancel()
  return ch	
@@ -115,21 +115,22 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result{
 
 	for i := 0; i < len(files); i++ {
 		wg.Add(1)
-
+      test:=Result{}
 		go func(ctx context.Context, filename string, i int, ch chan<- Result) {
            defer wg.Done()
 		   res:=FindAnyMatchTextInFile(phrase,filename)
-
-             ch <- res
-		cancel()	
-		}(ctx, files[i], i, ch)
-	
-		go func() {
+              
+          if res !=test{
+			   ch <- res     
+		  }
+		  cancel()
+ 	
+		 }(ctx, files[i], i, ch)
+		 go func() {
 			defer close(ch)
 			wg.Wait()
 		  }()
-		 // return ch
-	}
+		}
 	cancel()
- return ch	
+	return ch
 }

@@ -15,7 +15,7 @@ func BenchmarkAll(b *testing.B) {
  }
 want := [] Result{
 	{
-	Phrase:"Auto",
+	Phrase:"Auto" ,
 	Line:"40a6238e-ccf0-42d9-adf4-364c540c2d30;1;2;Auto;INPROGRESS",
 	LineNum:2,
 	ColNum:42,
@@ -25,8 +25,8 @@ want := [] Result{
 		ch:=All(ctx, "Auto",files)
 		result:= <- ch
 
-		if result[i] == want[i] {
-			b.Fatalf("invalid result, got %v", result)
+		if result[0]== want[0] {
+			b.Fatalf("invalid result, got %v,want %v", result,want)
 		}
 	}
 }
