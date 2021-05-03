@@ -123,15 +123,15 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result{
           if res !=test{
 			   ch <- res     
 		  }
-		if len(ch)==1{
-			return
-		}
  	
 		 }(ctx, files[i], i, ch)
 		 go func() {
 			defer close(ch)
 			wg.Wait()
 		  }()
+		  if len(ch) == 1 {
+			  break
+		  }
 		}
 	cancel()
 	return ch
