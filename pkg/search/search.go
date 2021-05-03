@@ -65,8 +65,8 @@ func FindAnyMatchTextInFile(phrase, fileName string) (res Result){
 				ColNum: int64(strings.Index(line,phrase)) + 1, 
 
 			}
-		break
 		}
+		break
 	 }
 return res
 }
