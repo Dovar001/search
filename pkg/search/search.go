@@ -128,10 +128,11 @@ func Any(ctx context.Context, phrase string, files []string) <-chan Result{
 		 }(ctx, files[i], i, ch)
 		}	
 		 go func() {
-			defer close(ch)
+			defer close(ch)	
 			wg.Wait()
+			cancel()
 		  }()
 		  
-	//cancel()
+	
 	return ch
 }
